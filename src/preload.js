@@ -1,7 +1,8 @@
 // Preload script for Electron
-const { contextBridge } = require('electron');
+const { contextBridge, ipcRenderer } = require('electron');
 
-// 如果需要可以在这里暴露一些 API 给渲染进程
+// 暴露 API 给渲染进程
 contextBridge.exposeInMainWorld('electronAPI', {
-    // 可以在这里添加主进程的 API 调用
+    startDrag: (x, y) => ipcRenderer.send('start-drag', { x, y }),
+    moveDrag: (x, y) => ipcRenderer.send('move-drag', { x, y }),
 });

@@ -56,13 +56,20 @@ class PetLogic {
         this.lastInteractionTime = Date.now();
         this.setState('drag');
         this.container.classList.add('dragging');
+        
+        // 通知主进程开始拖动
+        if (window.electronAPI) {
+            window.electronAPI.startDrag(e.screenX, e.screenY);
+        }
     }
 
     // 鼠标移动 - 跟随拖动，更新状态
     handleMouseMove(e) {
         if (this.isDragging) {
-            // 在这里可以添加拖动窗口的逻辑
-            // 如果使用 Electron，需要在主进程实现具体的拖动
+            // 通知主进程移动窗口
+            if (window.electronAPI) {
+                window.electronAPI.moveDrag(e.screenX, e.screenY);
+            }
         }
     }
 

@@ -1,7 +1,11 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 
 let mainWindow;
+let dragStartX = 0;
+let dragStartY = 0;
+let windowStartX = 0;
+let windowStartY = 0;
 
 function createWindow() {
   // 获取屏幕信息（可选：让窗口显示在指定位置）
@@ -25,6 +29,21 @@ function createWindow() {
     alwaysOnTop: true,           // 始终最前
     skipTaskbar: true,           // 隐藏任务栏
     icon: path.join(__dirname, '../assets/icon.png'),
+  });
+
+  // 处理拖动事件
+  ipcMain.on('start-drag', (event, { x, y }) => {
+    dragStartX = x;
+    dragStartY = y;
+    const bounds = mainWindow.getBounds();
+    windowStartX = bounds.x;
+    windowStartY = bounds.y;
+  });
+
+  ipcMain.on('move-drag', (event, { x, y }) => {
+    const deltaX = x - dragStartX;
+    const deltaY = y - dragStartY;
+    mainWindow.setPosition(windowStartX + deltaX, windowStartY + deltaY);
   });
 
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
