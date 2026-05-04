@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>白色小团子 - 桌面宠物</title>
+    <link rel="stylesheet" href="styles/pet.css">
+</head>
+<body>
+    <div class="pet-container">
+        <svg id="pet-svg" viewBox="0 0 200 250" width="200" height="250">
+            <!-- 动画定义 -->
+            <defs>
+                <style>
+                    @keyframes breathe {
+                        0%, 100% { transform: translateY(0); }
+                        50% { transform: translateY(-3px); }
+                    }
+                    @keyframes blink {
+                        0%, 90%, 100% { opacity: 1; }
+                        95% { opacity: 0; }
+                    }
+                    @keyframes wave {
+                        0%, 100% { transform: rotate(0deg); transform-origin: 160px 90px; }
+                        25% { transform: rotate(-20deg); transform-origin: 160px 90px; }
+                        75% { transform: rotate(20deg); transform-origin: 160px 90px; }
+                    }
+                    @keyframes sway {
+                        0%, 100% { transform: translateX(0); }
+                        50% { transform: translateX(-5px); }
+                    }
+                    @keyframes wobble {
+                        0%, 100% { transform: translateY(0) translateX(0); }
+                        25% { transform: translateY(-8px) translateX(2px); }
+                        75% { transform: translateY(-8px) translateX(-2px); }
+                    }
+                    @keyframes sleepFloat {
+                        0%, 100% { transform: translateY(0); }
+                        50% { transform: translateY(-4px); }
+                    }
+                    @keyframes heartBounce {
+                        0% { opacity: 1; transform: scale(0.5) translateY(0); }
+                        100% { opacity: 0; transform: scale(1) translateY(-40px); }
+                    }
+                </style>
+            </defs>
+
+            <!-- 身体 -->
+            <circle id="body" cx="100" cy="130" r="60" fill="#f5f5f5" stroke="#2c2c2c" stroke-width="4"/>
+
+            <!-- 头部 -->
+            <circle id="head" cx="100" cy="80" r="45" fill="#f5f5f5" stroke="#2c2c2c" stroke-width="4"/>
+
+            <!-- 耳朵 -->
+            <circle id="ear-left" cx="75" cy="45" r="10" fill="#f5f5f5" stroke="#2c2c2c" stroke-width="3"/>
+            <circle id="ear-right" cx="125" cy="45" r="10" fill="#f5f5f5" stroke="#2c2c2c" stroke-width="3"/>
+
+            <!-- 腮红 -->
+            <ellipse id="cheek-left" cx="65" cy="90" rx="12" ry="14" fill="#f8d7e6" opacity="0.7"/>
+            <ellipse id="cheek-right" cx="135" cy="90" rx="12" ry="14" fill="#f8d7e6" opacity="0.7"/>
+
+            <!-- 害羞线 -->
+            <line id="shy-line-1" x1="50" y1="95" x2="60" y2="97" stroke="#d4a5bf" stroke-width="1.5" stroke-linecap="round" opacity="0"/>
+            <line id="shy-line-2" x1="50" y1="101" x2="60" y2="99" stroke="#d4a5bf" stroke-width="1.5" stroke-linecap="round" opacity="0"/>
+            <line id="shy-line-3" x1="50" y1="107" x2="60" y2="105" stroke="#d4a5bf" stroke-width="1.5" stroke-linecap="round" opacity="0"/>
+            <line id="shy-line-4" x1="140" y1="95" x2="150" y2="97" stroke="#d4a5bf" stroke-width="1.5" stroke-linecap="round" opacity="0"/>
+            <line id="shy-line-5" x1="140" y1="101" x2="150" y2="99" stroke="#d4a5bf" stroke-width="1.5" stroke-linecap="round" opacity="0"/>
+            <line id="shy-line-6" x1="140" y1="107" x2="150" y2="105" stroke="#d4a5bf" stroke-width="1.5" stroke-linecap="round" opacity="0"/>
+
+            <!-- 左眼 -->
+            <circle id="eye-left" cx="82" cy="75" r="8" fill="#2c2c2c"/>
+            <circle id="eye-left-light" cx="84" cy="73" r="3" fill="#ffffff" pointer-events="none"/>
+
+            <!-- 右眼 -->
+            <circle id="eye-right" cx="118" cy="75" r="8" fill="#2c2c2c"/>
+            <circle id="eye-right-light" cx="120" cy="73" r="3" fill="#ffffff" pointer-events="none"/>
+
+            <!-- 眼睑 (眨眼用) -->
+            <ellipse id="eye-left-lid" cx="82" cy="75" rx="8" ry="2" fill="#f5f5f5" opacity="0"/>
+            <ellipse id="eye-right-lid" cx="118" cy="75" rx="8" ry="2" fill="#f5f5f5" opacity="0"/>
+
+            <!-- 眉毛 -->
+            <path id="brow-left" d="M 75 62 Q 82 60 89 62" stroke="#2c2c2c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path id="brow-right" d="M 111 62 Q 118 60 125 62" stroke="#2c2c2c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+            <!-- 嘴巴 -->
+            <path id="mouth" d="M 95 95 Q 100 99 105 95" stroke="#2c2c2c" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+            <!-- 眼泪 -->
+            <path id="tear-left" d="M 82 83 Q 80 88 82 95" stroke="#87ceeb" stroke-width="2" fill="none" opacity="0" stroke-linecap="round"/>
+            <circle id="tear-left-drop" cx="82" cy="97" r="2" fill="#87ceeb" opacity="0"/>
+            <path id="tear-right" d="M 118 83 Q 120 88 118 95" stroke="#87ceeb" stroke-width="2" fill="none" opacity="0" stroke-linecap="round"/>
+            <circle id="tear-right-drop" cx="118" cy="97" r="2" fill="#87ceeb" opacity="0"/>
+
+            <!-- 四肢 -->
+            <circle id="leg-left" cx="75" cy="185" r="12" fill="#f5f5f5" stroke="#2c2c2c" stroke-width="3"/>
+            <circle id="leg-right" cx="125" cy="185" r="12" fill="#f5f5f5" stroke="#2c2c2c" stroke-width="3"/>
+            <circle id="hand-left" cx="65" cy="145" r="10" fill="#f5f5f5" stroke="#2c2c2c" stroke-width="3"/>
+            <circle id="hand-right" cx="135" cy="145" r="10" fill="#f5f5f5" stroke="#2c2c2c" stroke-width="3"/>
+
+            <!-- 爱心 -->
+            <g id="heart" opacity="0" transform="translate(160, 60)">
+                <path d="M 0,-5 C -3,-8 -8,-8 -8,-3 C -8,2 -3,7 0,10 C 3,7 8,2 8,-3 C 8,-8 3,-8 0,-5" fill="#ff69b4"/>
+            </g>
+
+            <!-- 书 (study 状态用) -->
+            <g id="book" opacity="0" transform="translate(120, 150)">
+                <rect x="-15" y="-10" width="30" height="20" fill="#8b4513" stroke="#2c2c2c" stroke-width="2" rx="2"/>
+                <line x1="-15" y1="0" x2="15" y2="0" stroke="#2c2c2c" stroke-width="1"/>
+                <line x1="-10" y1="-7" x2="10" y2="-7" stroke="#ffd700" stroke-width="1"/>
+                <line x1="-10" y1="-3" x2="10" y2="-3" stroke="#ffd700" stroke-width="1"/>
+            </g>
+
+            <!-- ZZZ (sleep 状态用) -->
+            <g id="zzz" opacity="0" transform="translate(140, 50)">
+                <text x="0" y="0" font-family="Arial" font-size="16" font-weight="bold" fill="#2c2c2c">z</text>
+                <text x="12" y="-8" font-family="Arial" font-size="14" font-weight="bold" fill="#2c2c2c">z</text>
+                <text x="22" y="-18" font-family="Arial" font-size="12" font-weight="bold" fill="#2c2c2c">z</text>
+            </g>
+        </svg>
+
+        <!-- 状态指示器 (仅调试) -->
+        <div id="status-debug" class="status-debug">idle</div>
+    </div>
+
+    <script src="assets/pet-renderer.js"></script>
+    <script src="assets/pet-logic.js"></script>
+</body>
+</html>

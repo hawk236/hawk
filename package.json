@@ -1,0 +1,16 @@
+{
+  "name": "chiikawa-pet",
+  "version": "1.0.0",
+  "description": "Cute desktop pet application - 白色小团子桌面宠物",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --remote-debugging-port=9222"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^27.0.0"
+  },
+  "type": "commonjs"
+}
